@@ -1,0 +1,21 @@
+{
+  "name": "appname",
+  "version": "2.2.8",
+  "description": "",
+  "scripts": {
+    "prestart": "tsc",
+    "start": "node build/app.js"
+  },
+  "author": "Dashka",
+  "license": "ISC",
+  "dependencies": {
+    "db-migrate": "^0.10.0-beta.20",
+    "koa": "^2.0.0-alpha.7",
+    "koa-bodyparser": "^2.2.0",
+    "koa-router": "^7.0.1",
+    "mysql": "^2.11.1",
+    "ts-node": "^1.2.2",
+    "typescript": "^2.0.6",
+    "typings": "^1.3.2"
+  }
+}

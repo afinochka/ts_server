@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "debug": "registry:npm/debug",
+    "mysql": "registry:npm/mysql"
+  },
+  "globalDependencies": {
+    "cookies": "registry:dt/cookies",
+    "koa": "registry:dt/koa",
+    "koa-bodyparser": "registry:dt/koa-bodyparser",
+    "koa-router": "registry:dt/koa-router",
+    "node": "registry:dt/node"
+  }
+}
