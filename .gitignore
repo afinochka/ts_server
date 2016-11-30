@@ -1,4 +1,5 @@
 node_modules
 *.map
 *.js
-typings
+typings/*
+!typings/async-busboy.d.ts
