@@ -23,29 +23,41 @@ async function read_file(path: string) {
         ctx.body = await thunk(fs.readFile, ['./views/index.html', 'utf-8'], fs);
     });
 
-    router.post('/upload', async function(ctx, next) {
+    router.post('/upload', async function (ctx, next) {
+        var parsedString = bodyParser.parseBodyToWhere(ctx.query);
         const {files, fields} = await asyncBusboy(ctx.req);
-        let start = Math.floor(Math.random() * 54);
-        let hash = crypto.createHash('sha256').update(JSON.stringify(files[0])).digest('hex').substring(start, start + 10)
-        let fileType = '.' + files[0].mimeType.substring(files[0].mimeType.search('/') + 1);
-        files[0].pipe(fs.createWriteStream(hash + fileType));
-        ctx.body = "OK"
+        files.forEach(element => {
+            let start = Math.floor(Math.random() * 54);
+            let hash = crypto.createHash('sha256').update(JSON.stringify(element)).digest('hex').substring(start, start + 10)
+            let fileType = '.' + element.mimeType.substring(element.mimeType.search('/') + 1);
+            element.pipe(fs.createWriteStream('./uploads/' + hash + fileType));
+
+            var insert = { 
+                id: null,
+                post_id: parsedString.params[0], 
+                title: hash + fileType
+            };
+            mysql.insert('images', insert);
+        });
+        
+        ctx.body = "OK";
     });
 
-    router.get('/pepe', async (ctx) => {
+    router.get('/upload/:name', async (ctx) => {
         ctx.type = 'image/jpeg';
-        ctx.body = await read_file('./views/pepe.jpg');
+        ctx.body = await read_file('./uploads/' + ctx.params.name);
+        
     });
 
     router.get('/:table', async (ctx) => {
         var parsedString = bodyParser.parseBodyToWhere(ctx.query);
-        ctx.body = await mysql.query("SELECT * FROM " + ctx.params.table + " " + parsedString.whereString
-            + " ORDER BY id", 
+        ctx.body = await mysql.query("SELECT * FROM " + ctx.params.table + " "
+            + parsedString.whereString
+            + " ORDER BY id",
             parsedString.params);
     });
 
     router.post('/:table', async (ctx) => {
-        if(ctx.params.table == "images")
         ctx.body = await mysql.insert(ctx.params.table, ctx.request.body);
     });
 
@@ -58,10 +70,10 @@ async function read_file(path: string) {
     });
 
 
-    app.use(function *(next){
-        try{
+    app.use(function* (next) {
+        try {
             yield next;
-        }  catch (err){
+        } catch (err) {
             this.status = err.status || 500;
             this.body = err;
         }

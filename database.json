@@ -1,9 +1,9 @@
 {
     "dev": {
       "host"     : "localhost",
-      "port"     : "3307",
+      "port"     : "3307", 
       "user"     : "root",
-      "password" : "123456",
+      "password" : "123456", //u1BYJCpm8ZfP7pup
       "database" : "4hdb",
       "driver"   : "mysql"
     },

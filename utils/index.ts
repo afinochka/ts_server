@@ -10,3 +10,5 @@ export function parseBodyToWhere(body: any): { params: Array<any>, whereString: 
     return {params, whereString};
 }
 
+
+
